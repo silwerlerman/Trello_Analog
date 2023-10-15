@@ -1,9 +1,6 @@
 import Task from '@components/Task/Task';
-import { IStage, ITask } from '@models';
-
-interface StageProps {
-  stage: IStage;
-}
+import { ITask } from '@interfaces';
+import { StageProps } from '@props';
 
 const Stage = ({ stage }: StageProps) => {
   const count: number = stage.tasks.length;
@@ -18,7 +15,6 @@ const Stage = ({ stage }: StageProps) => {
     <p className="text-center">Задач в данном статусе нет</p>
   );
 
-  console.warn(tasks, tasksArray);
   return (
     <div className="flex flex-col w-full h-fit bg-slate-300 rounded shadow-2xl shadow-slate-500/50 divide-y max-task-h border-2 shadow-inner  min-w-[250px]">
       <div className="flex justify-between w-full px-4 py-4">

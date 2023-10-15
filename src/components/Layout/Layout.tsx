@@ -7,7 +7,7 @@ export default function Layout() {
         <NavLink to="/" className="text-white px-3 py-6 opacity-50">
           Список
         </NavLink>
-        <NavLink to="/edit" className="text-white px-3 py-6 opacity-50">
+        <NavLink to="/create" className="text-white px-3 py-6 opacity-50">
           Создать
         </NavLink>
       </header>

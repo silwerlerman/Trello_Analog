@@ -12,7 +12,10 @@
     "paths": {
       "@pages/*": ["src/pages/*"],
       "@components/*": ["src/components/*"],
-      "@models":["src/models.ts"],
+      "@enums":["src/models/enums"],
+      "@functions":["src/models/functions"],
+      "@interfaces":["src/models/interfaces"],
+      "@props":["src/models/props"],
     },
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,

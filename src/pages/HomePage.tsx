@@ -1,5 +1,5 @@
 import Stage from '@components/Stage/Stage';
-import { IStage } from '@models';
+import { IStage } from '@interfaces';
 
 const HomePage = () => {
   const stages: IStage[] = [
