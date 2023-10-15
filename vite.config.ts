@@ -6,5 +6,5 @@ export default defineConfig({
   server: {
     port: 8082
   },
-    plugins: [react(), tsconfigPaths()],
+  plugins: [react(), tsconfigPaths()],
 })
