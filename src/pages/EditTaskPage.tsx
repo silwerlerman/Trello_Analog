@@ -1,7 +1,9 @@
-export const EditTaskPage = () => {
+const EditTaskPage = () => {
   return (
     <>
-      <p>EditTask</p>
+      <p className="text-white">Форма редактирования задачи</p>
     </>
   );
 };
+
+export default EditTaskPage;

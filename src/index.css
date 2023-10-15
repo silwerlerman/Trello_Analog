@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .max-work-area-h {
+    max-height: calc(100vh - 76px);
+  }
+  .max-task-h {
+    max-height: calc(100vh - 120px);
+  }
+}
+
+.active {
+  @apply border-x-2 shadow-inner opacity-100 bg-indigo-800;
+}
