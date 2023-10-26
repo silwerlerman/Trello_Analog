@@ -1,14 +1,12 @@
 import Task from '@components/Task/Task';
-import { ITask } from '@interfaces';
+
 import { StageProps } from '@props';
 
 const Stage = ({ stage }: StageProps) => {
-  const count: number = stage.tasks.length;
-
-  const tasks: ITask[] = stage.tasks;
+  const count: number = stage.tasks?.length;
 
   const tasksArray = count ? (
-    tasks.map((task, i) => {
+    stage.tasks?.map((task, i) => {
       return <Task task={task} key={i} />;
     })
   ) : (

@@ -6,6 +6,7 @@ export interface IStage {
 export interface ITask {
   id: number,
   name: string,
+  stage: string,
   created_at: string,
   description?: string,
   tags?: string[]

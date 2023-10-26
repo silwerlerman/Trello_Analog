@@ -1,38 +1,32 @@
+import { getTasks } from '@components/Network/NetworkController';
 import Stage from '@components/Stage/Stage';
-import { IStage } from '@interfaces';
+import { IStage, ITask } from '@interfaces';
+import { useEffect, useState } from 'react';
 
 const HomePage = () => {
+  const [Tasks, setTasks] = useState<ITask[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      setTasks((await getTasks(5)) || []);
+    })();
+  }, []);
+
   const stages: IStage[] = [
     {
       name: 'Назначено',
-      tasks: [
-        {
-          id: 1,
-          name: 'Задача 1',
-          created_at: new Date().toLocaleDateString(),
-          description:
-            'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deserunt aliquid corrupti, impedit ad laudantium sit, mollitia perferendis blanditiis possimus dignissimos quis explicabo numquam unde? Quae numquam iusto expedita ad autem!'
-        },
-        {
-          id: 2,
-          name: 'Задача 2',
-          created_at: new Date().toLocaleDateString(),
-          description:
-            'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deserunt aliquid corrupti, impedit ad laudantium sit, mollitia perferendis blanditiis possimus dignissimos quis explicabo numquam unde? Quae numquam iusto expedita ad autem!'
-        },
-        {
-          id: 3,
-          name: 'Задача 3',
-          created_at: new Date().toLocaleDateString(),
-          description:
-            'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deserunt aliquid corrupti, impedit ad laudantium sit, mollitia perferendis blanditiis possimus dignissimos quis explicabo numquam unde? Quae numquam iusto expedita ad autem!'
-        }
-      ]
+      tasks: Tasks.filter(task => task.stage == 'Назначено')
     },
-    { name: 'На паузе', tasks: [] },
-    { name: 'В работе', tasks: [] },
-    { name: 'На проверке', tasks: [] },
-    { name: 'Выполнено', tasks: [] }
+    { name: 'На паузе', tasks: Tasks.filter(task => task.stage == 'На паузе') },
+    { name: 'В работе', tasks: Tasks.filter(task => task.stage == 'В работе') },
+    {
+      name: 'На проверке',
+      tasks: Tasks.filter(task => task.stage == 'На проверке')
+    },
+    {
+      name: 'Выполнено',
+      tasks: Tasks.filter(task => task.stage == 'Выполнено')
+    }
   ];
 
   const stagesToShow = stages.map((stage, i) => (
