@@ -1,31 +1,18 @@
 import { Stage } from '@components/Stage/Stage';
-import { getTasks } from '@components/Network/NetworkController';
-import { Stage as StageTypes, Task as TaskTypes } from '@types';
-import { useEffect, useState } from 'react';
+import { Stage as StageType } from '@types';
 
 export const HomePage = () => {
-  const [Tasks, setTasks] = useState<TaskTypes[]>([]);
-
-  useEffect(() => {
-    (async () => {
-      setTasks((await getTasks(5)) || []);
-    })();
-  }, []);
-
-  const stages: StageTypes[] = [
+  const stages: StageType[] = [
     {
-      name: 'Назначено',
-      tasks: Tasks.filter(task => task.stage == 'Назначено')
+      name: 'Назначено'
     },
-    { name: 'На паузе', tasks: Tasks.filter(task => task.stage == 'На паузе') },
-    { name: 'В работе', tasks: Tasks.filter(task => task.stage == 'В работе') },
+    { name: 'На паузе' },
+    { name: 'В работе' },
     {
-      name: 'На проверке',
-      tasks: Tasks.filter(task => task.stage == 'На проверке')
+      name: 'На проверке'
     },
     {
-      name: 'Выполнено',
-      tasks: Tasks.filter(task => task.stage == 'Выполнено')
+      name: 'Выполнено'
     }
   ];
   const stagesToShow = stages.map((stage, i) => (

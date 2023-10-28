@@ -2,11 +2,10 @@ import { Stage as stage } from '@types';
 
 export const stages: stage[] = [
   {
-    name: 'Назначено',
-    tasks: []
+    name: 'Назначено'
   },
-  { name: 'На паузе', tasks: [] },
-  { name: 'В работе', tasks: [] },
-  { name: 'На проверке', tasks: [] },
-  { name: 'Выполнено', tasks: [] }
+  { name: 'На паузе' },
+  { name: 'В работе' },
+  { name: 'На проверке' },
+  { name: 'Выполнено' }
 ];

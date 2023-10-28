@@ -1,6 +1,5 @@
 export type Stage = {
   name: string;
-  tasks: Task[];
 };
 
 export type Task = {
