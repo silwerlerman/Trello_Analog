@@ -1,6 +1,5 @@
 export interface IStage {
   name: string;
-  tasks: ITask[]
 };
 
 export interface ITask {

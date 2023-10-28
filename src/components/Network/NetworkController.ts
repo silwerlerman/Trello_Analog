@@ -3,24 +3,39 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';
 
-const convertTaskData = (rawTask: { id: number; title: string; body: string; }) => {
+axios.interceptors.response.use(
+  function (response) {
+    if (Object.keys(response.data).includes('userId')) {
+      return convertTaskData(response.data);
+    }
+    return response.data;
+  },
+
+  function (error) {
+    console.error(error);
+    return Promise.reject(error);
+  }
+);
+
+const convertTaskData = (rawTask: {
+  id: number;
+  title: string;
+  body: string;
+}) => {
   return {
     id: rawTask?.id,
     name: rawTask?.title,
-    stage: "Назначено",
+    stage: 'Назначено',
     created_at: new Date().toLocaleDateString(),
-    description: rawTask?.body,
-  }
-}
+    description: rawTask?.body
+  };
+};
 
 export const getTasks = async (count: number) => {
-  const taskList:ITask[] = [];
+  const taskList: ITask[] = [];
   try {
     for (let i = 1; i <= count; i++) {
-      const {data} = await axios.get(
-      `/posts/${i}`
-      );
-      taskList.push(Object.keys(data).includes('userId') ? convertTaskData(data) : data);
+      taskList.push(await axios.get(`/posts/${i}`));
     }
     return taskList;
   } catch (error) {
