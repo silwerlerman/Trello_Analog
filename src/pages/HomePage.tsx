@@ -1,5 +1,6 @@
 import Stage from '@components/Stage/Stage';
 import { IStage } from '@interfaces';
+import { Outlet } from 'react-router-dom';
 const HomePage = () => {
   const stages: IStage[] = [
     {
@@ -20,7 +21,10 @@ const HomePage = () => {
   ));
 
   return (
-    <div className="flex justify-center gap-4 max-task-h">{stagesToShow}</div>
+    <>
+      <div className="flex justify-center gap-4 max-task-h">{stagesToShow}</div>
+      <Outlet />
+    </>
   );
 };
 

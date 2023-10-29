@@ -25,20 +25,34 @@ const convertTaskData = (rawTask: {
   return {
     id: rawTask?.id,
     name: rawTask?.title,
-    stage: 'Назначено',
     created_at: new Date().toLocaleDateString(),
     description: rawTask?.body
   };
 };
 
-export const getTasks = async (count: number) => {
+export const getTasks = async (count: number, stage: string) => {
   const taskList: ITask[] = [];
   try {
     for (let i = 1; i <= count; i++) {
-      taskList.push(await axios.get(`/posts/${i}`));
+      taskList.push({ ...(await axios.get(`/posts/${i}`)), stage });
     }
     return taskList;
   } catch (error) {
     return [];
+  }
+};
+
+export const getActualTask = async (id: number) => {
+  try {
+    const task: ITask = await axios.get(`/posts/${id}`);
+    return task;
+  } catch (error) {
+    return {
+      id,
+      name: '-',
+      stage: '-',
+      created_at: '-',
+      description: '-'
+    };
   }
 };

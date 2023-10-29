@@ -9,6 +9,10 @@ export type TaskProps = {
   task: ITask;
 };
 
-export interface StageProps {
+export type StageProps = {
   stage: IStage;
-}
+};
+
+export type DialogProps = {
+  title: string;
+};

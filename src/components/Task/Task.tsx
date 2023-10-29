@@ -5,7 +5,7 @@ const Task = ({ task }: TaskProps) => {
   return (
     <div className="flex flex-col gap-2 py-3 px-3 border-2 rounded-lg drop-shadow">
       <Link
-        to={`/preview/${task.id}`}
+        to={`/list/preview/${task.id}`}
         className="hover:text-purple-800 hover:cursor-pointer font-bold w-fit"
       >
         {task.name}
