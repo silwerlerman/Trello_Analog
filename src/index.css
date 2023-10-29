@@ -11,6 +11,12 @@
   }
 }
 
+@layer components {
+  .custom-box {
+    @apply bg-slate-300 rounded shadow-2xl shadow-slate-500/50 divide-y max-task-h border-2 shadow-inner;
+  }
+}
+
 a.active {
   @apply border-x-2 shadow-inner opacity-100 bg-indigo-800;
 }

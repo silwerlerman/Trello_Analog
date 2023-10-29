@@ -1,5 +1,6 @@
 import { Stage } from '@components/Stage/Stage';
 import { Stage as StageType } from '@types';
+import { Outlet } from 'react-router-dom';
 
 export const HomePage = () => {
   const stages: StageType[] = [
@@ -20,6 +21,9 @@ export const HomePage = () => {
   ));
 
   return (
-    <div className="flex justify-center gap-4 max-task-h">{stagesToShow}</div>
+    <>
+      <div className="flex justify-center gap-4 max-task-h">{stagesToShow}</div>
+      <Outlet />
+    </>
   );
 };
