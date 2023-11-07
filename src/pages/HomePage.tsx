@@ -1,8 +1,8 @@
 import Stage from '@components/Stage/Stage';
-import { IStage } from '@interfaces';
+import { TStage } from '@schemas';
 import { Outlet } from 'react-router-dom';
 const HomePage = () => {
-  const stages: IStage[] = [
+  const stages: TStage[] = [
     {
       name: 'Назначено'
     },

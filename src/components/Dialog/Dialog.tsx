@@ -1,7 +1,7 @@
 import Loader from '@components/Loader/Loader';
 import { getActualTask } from '@components/Network/NetworkController';
 import { closeDialigFunc } from '@functions';
-import { ITask } from '@interfaces';
+import { TTask } from '@schemas';
 import { DialogProps } from '@props';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -9,11 +9,11 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 function Dialog({ title }: DialogProps) {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const params = useParams();
-  const [task, setTask] = useState<ITask>({
+  const [task, setTask] = useState<TTask>({
     id: Number(params.id),
     name: '',
     stage: '',
-    created_at: ''
+    created_at: new Date()
   });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -59,7 +59,7 @@ function Dialog({ title }: DialogProps) {
       </div>
       <div className="flex gap-2">
         <p>Дата создания:</p>
-        <p>{task.created_at}</p>
+        <p>{task.created_at.toLocaleDateString()}</p>
       </div>
     </div>
   );

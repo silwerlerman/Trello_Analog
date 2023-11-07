@@ -18,7 +18,7 @@ const Task = ({ task }: TaskProps) => {
         >
           <button>Изменить</button>
         </Link>
-        <p className="text-right">{task.created_at}</p>
+        <p className="text-right">{task.created_at.toLocaleDateString()}</p>
       </div>
     </div>
   );

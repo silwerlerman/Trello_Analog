@@ -1,4 +1,4 @@
-import { IStage, ITask } from '@interfaces';
+import { TStage, TTask } from '@schemas';
 import { PageModes } from './enums';
 
 export type EditTaskProps = {
@@ -6,11 +6,11 @@ export type EditTaskProps = {
 };
 
 export type TaskProps = {
-  task: ITask;
+  task: TTask;
 };
 
 export type StageProps = {
-  stage: IStage;
+  stage: TStage;
 };
 
 export type DialogProps = {

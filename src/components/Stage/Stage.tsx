@@ -1,12 +1,12 @@
 import Loader from '@components/Loader/Loader';
 import { getTasks } from '@components/Network/NetworkController';
 import Task from '@components/Task/Task';
-import { ITask } from '@interfaces';
+import { TTask } from '@schemas';
 import { StageProps } from '@props';
 import { useEffect, useState } from 'react';
 
 const Stage = ({ stage }: StageProps) => {
-  const [tasks, setTasks] = useState<ITask[]>([]);
+  const [tasks, setTasks] = useState<TTask[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const Stage = ({ stage }: StageProps) => {
   const count: string | number = loading ? '' : tasks?.length;
 
   const tasksArray = count ? (
-    tasks?.map((task: ITask, i: number) => {
+    tasks?.map((task: TTask, i: number) => {
       return <Task task={task} key={i} />;
     })
   ) : (

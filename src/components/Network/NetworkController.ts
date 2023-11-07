@@ -1,14 +1,15 @@
-import { ITask } from '@interfaces';
+import { TTask, taskSchema } from '@schemas';
 import axios from 'axios';
 
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';
 
 axios.interceptors.response.use(
   function (response) {
-    if (Object.keys(response.data).includes('userId')) {
-      return convertTaskData(response.data);
-    }
-    return response.data;
+    const validatedTask = taskSchema.safeParse(response.data);
+
+    return !validatedTask.success
+      ? convertTaskData(response.data)
+      : response.data;
   },
 
   function (error) {
@@ -25,13 +26,13 @@ const convertTaskData = (rawTask: {
   return {
     id: rawTask?.id,
     name: rawTask?.title,
-    created_at: new Date().toLocaleDateString(),
+    created_at: new Date(),
     description: rawTask?.body
   };
 };
 
 export const getTasks = async (count: number, stage: string) => {
-  const taskList: ITask[] = [];
+  const taskList: TTask[] = [];
   try {
     for (let i = 1; i <= count; i++) {
       taskList.push({ ...(await axios.get(`/posts/${i}`)), stage });
@@ -44,14 +45,14 @@ export const getTasks = async (count: number, stage: string) => {
 
 export const getActualTask = async (id: number) => {
   try {
-    const task: ITask = await axios.get(`/posts/${id}`);
+    const task: TTask = await axios.get(`/posts/${id}`);
     return task;
   } catch (error) {
     return {
       id,
       name: '-',
       stage: '-',
-      created_at: '-',
+      created_at: new Date(),
       description: '-'
     };
   }
