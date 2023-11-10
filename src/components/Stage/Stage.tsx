@@ -3,30 +3,29 @@ import { getTasks } from '@components/Network/NetworkController';
 import Task from '@components/Task/Task';
 import { TTask } from '@schemas';
 import { StageProps } from '@props';
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 
 const Stage = ({ stage }: StageProps) => {
-  const [tasks, setTasks] = useState<TTask[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { isLoading, error, data } = useQuery(`${stage.name}-tasks`, () =>
+    getTasks(2, stage.name)
+  );
 
-  useEffect(() => {
-    (async () => {
-      setTasks((await getTasks(2, stage.name)) || []);
-      setLoading(false);
-    })();
-  }, [loading, stage.name]);
+  if (error) {
+    return 'Error';
+  }
 
-  const count: string | number = loading ? '' : tasks?.length;
+  const count: string | number =
+    isLoading && data ? '' : data?.length ? data.length : '';
 
   const tasksArray = count ? (
-    tasks?.map((task: TTask, i: number) => {
+    data?.map((task: TTask, i: number) => {
       return <Task task={task} key={i} />;
     })
   ) : (
     <p className="text-center">Задач в данном статусе нет</p>
   );
 
-  const stageElements = loading ? <Loader /> : tasksArray;
+  const stageElements = isLoading ? <Loader /> : tasksArray;
 
   return (
     <div className="flex flex-col w-full h-fit custom-box min-w-[250px]">

@@ -1,21 +1,14 @@
 import Loader from '@components/Loader/Loader';
 import { getActualTask } from '@components/Network/NetworkController';
 import { closeDialigFunc } from '@functions';
-import { TTask } from '@schemas';
 import { DialogProps } from '@props';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
 
 function Dialog({ title }: DialogProps) {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const params = useParams();
-  const [task, setTask] = useState<TTask>({
-    id: Number(params.id),
-    name: '',
-    stage: '',
-    created_at: new Date()
-  });
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const goBack: closeDialigFunc = useCallback(
@@ -38,28 +31,29 @@ function Dialog({ title }: DialogProps) {
     return () => dialogNode?.removeEventListener('keydown', goBack);
   }, [goBack]);
 
-  useEffect(() => {
-    (async () => {
-      setTask(await getActualTask(Number(params.id)));
-      setLoading(false);
-    })();
-  }, [params.id, task.stage]);
+  const { isLoading, error, data } = useQuery(`activeTask`, () =>
+    getActualTask(Number(params.id))
+  );
 
-  const fields = loading ? (
+  if (error) {
+    return 'Error';
+  }
+
+  const fields = isLoading ? (
     <Loader />
   ) : (
     <div className="flex flex-col gap-2">
       <div className="flex gap-11">
         <p>Название:</p>
-        <p>{task.name}</p>
+        <p>{data?.name}</p>
       </div>
       <div className="flex gap-11">
         <p>Описание:</p>
-        <p>{task.description}</p>
+        <p>{data?.description}</p>
       </div>
       <div className="flex gap-2">
         <p>Дата создания:</p>
-        <p>{task.created_at.toLocaleDateString()}</p>
+        <p>{data?.created_at.toLocaleDateString()}</p>
       </div>
     </div>
   );
@@ -74,7 +68,7 @@ function Dialog({ title }: DialogProps) {
           <p className="font-bold text-lg">{title}</p>
           <div className="flex gap-6">
             <Link
-              to={`/edit/${task.id}`}
+              to={`/edit/${params.id}`}
               className="hover:text-purple-800 hover:cursor-pointer font-bold w-fit"
             >
               <button className="pt-[1.40px]">Изменить</button>
