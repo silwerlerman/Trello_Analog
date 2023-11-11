@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: Infinity } }
+  defaultOptions: { queries: { staleTime: Infinity, cacheTime: 1000 * 60 } }
 });
 
 export const App = () => {

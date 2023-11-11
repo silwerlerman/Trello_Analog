@@ -31,8 +31,9 @@ function Dialog({ title }: DialogProps) {
     return () => dialogNode?.removeEventListener('keydown', goBack);
   }, [goBack]);
 
-  const { isLoading, error, data } = useQuery(`activeTask`, () =>
-    getActualTask(Number(params.id))
+  const { isLoading, error, data } = useQuery(
+    [`activeTask`, Number(params.id)],
+    () => getActualTask(Number(params.id))
   );
 
   if (error) {
