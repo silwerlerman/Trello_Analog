@@ -1,26 +1,11 @@
-import { PageModes } from '@enums';
-import { switchEditPgWelcTxtdFunc } from '@functions';
-import { EditTaskProps } from '@props';
+import { useParams } from 'react-router-dom';
 
-const EditTaskPage = (props: EditTaskProps) => {
-  const mode: PageModes = props.mode;
+export const EditTaskPage = () => {
+  const { id } = useParams();
 
-  const welcomeText: switchEditPgWelcTxtdFunc = mode => {
-    switch (mode) {
-      case PageModes.create:
-        return 'Форма создания новой задачи';
-      case PageModes.edit:
-        return 'Форма редактирования задачи';
-      default:
-        return '';
-    }
+  const welcomeText: () => string = () => {
+    return id ? 'Форма редактирования задачи' : 'Форма создания новой задачи';
   };
 
-  return (
-    <>
-      <p className="text-white">{welcomeText(mode)}</p>
-    </>
-  );
+  return <p className="text-white">{welcomeText()}</p>;
 };
-
-export default EditTaskPage;

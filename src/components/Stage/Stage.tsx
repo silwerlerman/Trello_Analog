@@ -1,16 +1,13 @@
-import Task from '@components/Task/Task';
-import { ITask } from '@interfaces';
-import { StageProps } from '@props';
+import { Task } from '@components/Task/Task';
+import { Stage as stage, Task as task } from '@types';
 
-const Stage = ({ stage }: StageProps) => {
+export const Stage = ({ stage }: { stage: stage }) => {
   const count: number = stage.tasks.length;
 
-  const tasks: ITask[] = stage.tasks;
+  const tasks: task[] = stage.tasks;
 
   const tasksArray = count ? (
-    tasks.map((task, i) => {
-      return <Task task={task} key={i} />;
-    })
+    tasks.map((task, i) => <Task task={task} key={i} />)
   ) : (
     <p className="text-center">Задач в данном статусе нет</p>
   );
@@ -27,5 +24,3 @@ const Stage = ({ stage }: StageProps) => {
     </div>
   );
 };
-
-export default Stage;

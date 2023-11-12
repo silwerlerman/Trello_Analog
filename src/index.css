@@ -11,6 +11,6 @@
   }
 }
 
-.active {
+a.active {
   @apply border-x-2 shadow-inner opacity-100 bg-indigo-800;
 }

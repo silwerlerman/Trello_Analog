@@ -13,9 +13,7 @@
       "@pages/*": ["src/pages/*"],
       "@components/*": ["src/components/*"],
       "@enums":["src/models/enums"],
-      "@functions":["src/models/functions"],
-      "@interfaces":["src/models/interfaces"],
-      "@props":["src/models/props"],
+      "@types":["src/models/types"]
     },
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
