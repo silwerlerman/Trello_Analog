@@ -12,8 +12,11 @@ export const Stage = ({ stage }: { stage: StageType }) => {
     return 'Error';
   }
 
-  const count: string | number =
-    isLoading ? '' : data?.length ? data.length : '';
+  const count: string | number = isLoading
+    ? ''
+    : data?.length
+      ? data.length
+      : '';
 
   const tasksArray = count ? (
     data?.map((task: TaskType, i: number) => <Task task={task} key={i} />)
