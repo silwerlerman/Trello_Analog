@@ -1,8 +1,9 @@
 import { Loader } from '@components/Loader/Loader';
 import { getActualTask } from '@components/Network/NetworkController';
+import { Path } from '@enums';
 import { Task } from '@types';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, generatePath, useNavigate, useParams } from 'react-router-dom';
 
 export const Dialog = ({ title }: { title: string }) => {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
@@ -73,7 +74,7 @@ export const Dialog = ({ title }: { title: string }) => {
         <p className="font-bold text-lg">{title}</p>
         <div className="flex gap-6">
           <Link
-            to={`/edit/${task.id}`}
+            to={generatePath(Path.Edit, { id: task.id.toString() })}
             className="hover:text-purple-800 hover:cursor-pointer font-bold w-fit"
           >
             <button className="pt-[1.40px]">Изменить</button>
