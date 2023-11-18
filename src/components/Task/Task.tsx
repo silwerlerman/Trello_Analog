@@ -1,5 +1,5 @@
 import { Path } from '@enums';
-import { Task as TaskType } from '@types';
+import { Task as TaskType } from '@schemas';
 import { Link, generatePath } from 'react-router-dom';
 
 export const Task = ({ task }: { task: TaskType }) => {
@@ -19,7 +19,7 @@ export const Task = ({ task }: { task: TaskType }) => {
         >
           Изменить
         </Link>
-        <p className="text-right">{task.created_at}</p>
+        <p className="text-right">{task.created_at.toLocaleDateString()}</p>
       </div>
     </div>
   );

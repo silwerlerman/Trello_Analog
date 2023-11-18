@@ -1,6 +1,6 @@
-import { Stage as stage } from '@types';
+import { Stage } from '@schemas';
 
-export const stages: stage[] = [
+export const stages: Stage[] = [
   {
     name: 'Назначено'
   },
