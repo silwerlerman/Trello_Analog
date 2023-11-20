@@ -1,44 +1,11 @@
-import { getActualTask } from '@components/Network/NetworkController';
 import { Path } from '@enums';
-import { useCallback, useEffect, useRef } from 'react';
-import { Link, generatePath, useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { Link, generatePath } from 'react-router-dom';
+import { useNavigationBack } from 'src/hooks/useNavigationBack';
+import { usePreviewDialog } from 'src/hooks/usePreviewDialog';
 
 export const Dialog = ({ title }: { title: string }) => {
-  const dialogRef = useRef<HTMLDialogElement | null>(null);
-  const params = useParams();
-  const navigate = useNavigate();
-
-  const goBack: (
-    e: KeyboardEvent | React.MouseEvent<HTMLButtonElement>
-  ) => void = useCallback(
-    e => {
-      if (
-        (e.type == 'keydown' && (e as KeyboardEvent).code == 'Escape') ||
-        e.type == 'click'
-      ) {
-        navigate(-1);
-      }
-    },
-    [navigate]
-  );
-
-  useEffect(() => {
-    const dialogNode = dialogRef.current;
-    dialogNode?.addEventListener('keydown', goBack);
-    dialogNode?.showModal();
-
-    return () => dialogNode?.removeEventListener('keydown', goBack);
-  }, [goBack]);
-
-  const { isLoading, error, data } = useQuery(
-    [`activeTask`, Number(params.id)],
-    () => getActualTask(Number(params.id))
-  );
-
-  if (error) {
-    return 'Error';
-  }
+  const { id, dialogRef, isLoading, data } = usePreviewDialog();
+  const { goBack } = useNavigationBack();
 
   return (
     <dialog
@@ -49,7 +16,7 @@ export const Dialog = ({ title }: { title: string }) => {
         <p className="font-bold text-lg">{title}</p>
         <div className="flex gap-6">
           <Link
-            to={generatePath(Path.Edit, { id: params.id || null })}
+            to={generatePath(Path.Edit, { id: id || null })}
             className="hover:text-purple-800 hover:cursor-pointer font-bold w-fit"
           >
             <button className="pt-[1.40px]">Изменить</button>

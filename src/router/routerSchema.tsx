@@ -2,7 +2,7 @@ import { Path } from '@enums';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { Dialog } from '@components/Dialog/Dialog';
 
-const Router = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: Path.Home,
     //подобная запись позволяет реализовать параллельную загрузку данных
@@ -48,4 +48,4 @@ const Router = createBrowserRouter([
   }
 ]);
 
-export default Router;
+export default router;
