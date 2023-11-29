@@ -1,4 +1,3 @@
-import { Loader } from '@components/Loader/Loader';
 import { getActualTask } from '@components/Network/NetworkController';
 import { Path } from '@enums';
 import { Task } from '@types';
@@ -46,25 +45,6 @@ export const Dialog = ({ title }: { title: string }) => {
     })();
   }, [params.id, task.stage]);
 
-  const fields = loading ? (
-    <Loader />
-  ) : (
-    <div className="flex flex-col gap-2">
-      <div className="flex gap-11">
-        <p>Название:</p>
-        <p>{task.name}</p>
-      </div>
-      <div className="flex gap-11">
-        <p>Описание:</p>
-        <p>{task.description}</p>
-      </div>
-      <div className="flex gap-2">
-        <p>Дата создания:</p>
-        <p>{task.created_at}</p>
-      </div>
-    </div>
-  );
-
   return (
     <dialog
       className="flex flex-col w-full custom-box backdrop:bg-black backdrop:opacity-75 max-w-3xl"
@@ -87,7 +67,28 @@ export const Dialog = ({ title }: { title: string }) => {
           </button>
         </div>
       </header>
-      <div className="flex justify-center w-full px-4 py-4">{fields}</div>
+      <div
+        className={`${
+          loading ? 'loader' : 'px-4 py-4'
+        } flex justify-center w-full`}
+      >
+        {!loading && (
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-11">
+              <p>Название:</p>
+              <p>{task.name}</p>
+            </div>
+            <div className="flex gap-11">
+              <p>Описание:</p>
+              <p>{task.description}</p>
+            </div>
+            <div className="flex gap-2">
+              <p>Дата создания:</p>
+              <p>{task.created_at}</p>
+            </div>
+          </div>
+        )}
+      </div>
     </dialog>
   );
 };
