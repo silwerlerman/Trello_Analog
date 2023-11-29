@@ -13,7 +13,7 @@ export const Stage = ({ stage }: { stage: StageType }) => {
   }
 
   const count: string | number =
-    isLoading && data ? '' : data?.length ? data.length : '';
+    isLoading ? '' : data?.length ? data.length : '';
 
   const tasksArray = count ? (
     data?.map((task: TaskType, i: number) => <Task task={task} key={i} />)
