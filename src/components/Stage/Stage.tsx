@@ -26,11 +26,14 @@ export const Stage = ({ stage }: { stage: StageType }) => {
           isLoading ? 'loader' : 'px-4 py-4'
         } flex flex-col gap-3 h-full overflow-auto`}
       >
-        {!isLoading && count && Array.isArray(data) ? (
-          data.map((task: TaskType, i: number) => <Task task={task} key={i} />)
-        ) : (
-          <p className="text-center">Задач в данном статусе нет</p>
-        )}
+        {!isLoading &&
+          (count && Array.isArray(data) ? (
+            data.map((task: TaskType, i: number) => (
+              <Task task={task} key={i} />
+            ))
+          ) : (
+            <p className="text-center">Задач в данном статусе нет</p>
+          ))}
       </div>
     </div>
   );

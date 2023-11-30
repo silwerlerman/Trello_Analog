@@ -1,4 +1,3 @@
-import { Loader } from '@components/Loader/Loader';
 import { useEditTask } from 'src/hooks/useEditTask';
 import { useNavigationBack } from 'src/hooks/useNavigationBack';
 import { stages } from 'src/metadata';
@@ -86,8 +85,12 @@ export const EditTaskPage = () => {
           </div>
         </form>
       )}
-      <footer className="flex justify-center gap-6 px-4 py-4">
-        {!isSubmitting && !isLoading ? (
+      <footer
+        className={`${
+          isSubmitting || isLoading ? 'loader' : 'px-4 py-4'
+        } flex justify-center gap-6`}
+      >
+        {!isSubmitting && !isLoading && (
           <button
             className="hover:text-purple-800 hover:cursor-pointer font-bold w-fit"
             type="submit"
@@ -95,8 +98,6 @@ export const EditTaskPage = () => {
           >
             {id ? 'Сохранить' : 'Создать'}
           </button>
-        ) : (
-          <Loader />
         )}
         {id && !isSubmitting && !isLoading && (
           <button
