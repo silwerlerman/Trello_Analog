@@ -1,23 +1,22 @@
 import { getTasks } from '@components/Network/NetworkController';
 import { Task } from '@components/Task/Task';
 import { Stage as StageType, Task as TaskType } from '@schemas';
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 
 export const Stage = ({ stage }: { stage: StageType }) => {
-  const [tasks, setTasks] = useState<TaskType[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { isLoading, error, data } = useQuery(`${stage.name}-tasks`, () =>
+    getTasks(2, stage.name)
+  );
 
-  useEffect(() => {
-    (async () => {
-      setTasks((await getTasks(2, stage.name)) || []);
-      setLoading(false);
-    })();
-  }, [loading, stage.name]);
+  if (error) {
+    return 'Error';
+  }
 
-  const count: string | number = loading ? '' : tasks?.length;
+  const count: string | number =
+    isLoading ? '' : data?.length ? data.length : '';
 
   const tasksArray = count ? (
-    tasks?.map((task: TaskType, i: number) => <Task task={task} key={i} />)
+    data?.map((task: TaskType, i: number) => <Task task={task} key={i} />)
   ) : (
     <p className="text-center">Задач в данном статусе нет</p>
   );
@@ -30,10 +29,10 @@ export const Stage = ({ stage }: { stage: StageType }) => {
       </div>
       <div
         className={`${
-          loading ? 'loader' : 'px-4 py-4'
+          isLoading ? 'loader' : 'px-4 py-4'
         } flex flex-col gap-3 h-full overflow-auto`}
       >
-        {!loading && tasksArray}
+        {!isLoading && tasksArray}
       </div>
     </div>
   );
