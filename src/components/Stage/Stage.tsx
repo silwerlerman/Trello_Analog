@@ -4,22 +4,16 @@ import { Stage as StageType, Task as TaskType } from '@schemas';
 import { useQuery } from 'react-query';
 
 export const Stage = ({ stage }: { stage: StageType }) => {
-  const { isLoading, error, data } = useQuery(`${stage.name}-tasks`, () =>
-    getTasks(2, stage.name)
-  );
+  const { isLoading, data } = useQuery({
+    queryKey: [`${stage.name}-tasks`],
+    queryFn: () => getTasks(stage.name)
+  });
 
-  if (error) {
-    return 'Error';
-  }
-
-  const count: string | number =
-    isLoading ? '' : data?.length ? data.length : '';
-
-  const tasksArray = count ? (
-    data?.map((task: TaskType, i: number) => <Task task={task} key={i} />)
-  ) : (
-    <p className="text-center">Задач в данном статусе нет</p>
-  );
+  const count: string | number = isLoading
+    ? ''
+    : data?.length
+      ? data.length
+      : '';
 
   return (
     <div className="flex flex-col w-full h-fit custom-box min-w-[250px]">
@@ -32,7 +26,14 @@ export const Stage = ({ stage }: { stage: StageType }) => {
           isLoading ? 'loader' : 'px-4 py-4'
         } flex flex-col gap-3 h-full overflow-auto`}
       >
-        {!isLoading && tasksArray}
+        {!isLoading &&
+          (count && Array.isArray(data) ? (
+            data.map((task: TaskType, i: number) => (
+              <Task task={task} key={i} />
+            ))
+          ) : (
+            <p className="text-center">Задач в данном статусе нет</p>
+          ))}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { RouterProvider } from 'react-router-dom';
-import Router from './router/routerSchema';
+import router from './router/routerSchema';
 
 const client = new QueryClient({
   defaultOptions: { queries: { staleTime: Infinity, cacheTime: 1000 * 60 } }
@@ -10,7 +10,7 @@ const client = new QueryClient({
 export const App = () => {
   return (
     <QueryClientProvider client={client}>
-      <RouterProvider router={Router} />
+      <RouterProvider router={router} />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

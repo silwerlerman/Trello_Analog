@@ -1,15 +1,35 @@
-import { Task, taskSchema } from '@schemas';
+import {
+  Task,
+  taskSchema,
+  JsonPlaceholderType,
+  jsonPlaceholderShema
+} from '@schemas';
 import axios from 'axios';
 
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';
 
 axios.interceptors.response.use(
   function (response) {
-    const validatedTask = taskSchema.safeParse(response.data);
-
-    return !validatedTask.success
-      ? convertTaskData(response.data)
-      : response.data;
+    const data = response.data;
+    if (Array.isArray(data)) {
+      const validatedArray: Task[] = [];
+      data.forEach(task => {
+        validatedArray.push(
+          jsonPlaceholderShema.safeParse(task).success
+            ? convertTaskData(task)
+            : taskSchema.safeParse(task).success
+              ? task
+              : convertTaskData(task)
+        );
+      });
+      return validatedArray.filter(task => task.stage);
+    } else {
+      return jsonPlaceholderShema.safeParse(data).success
+        ? convertTaskData(data)
+        : taskSchema.safeParse(data).success
+          ? data
+          : convertTaskData1(data);
+    }
   },
 
   function (error) {
@@ -18,29 +38,35 @@ axios.interceptors.response.use(
   }
 );
 
-const convertTaskData = (rawTask: {
-  id: number;
-  title: string;
-  body: string;
-}) => {
+const convertTaskData = ({ id, title, body }: JsonPlaceholderType) => {
   return {
-    id: rawTask?.id,
-    name: rawTask?.title,
+    id,
+    name: title,
     created_at: new Date(),
-    description: rawTask?.body
+    description: body
   };
 };
 
-export const getTasks = async (count: number, stage: string) => {
-  const taskList: Task[] = [];
-  try {
-    for (let i = 1; i <= count; i++) {
-      taskList.push({ ...(await axios.get(`/posts/${i}`)), stage });
-    }
-    return taskList;
-  } catch (error) {
-    return [];
-  }
+const convertTaskData1 = ({
+  id,
+  name,
+  created_at,
+  description,
+  stage
+}: Task) => {
+  return {
+    id,
+    name,
+    stage,
+    created_at: new Date(created_at),
+    description
+  };
+};
+
+export const getTasks = async (
+  stage: string
+): Promise<(stage: string) => Task[] | []> => {
+  return (await axios.get(`/posts?stage=${stage}`)) || [];
 };
 
 export const getActualTask = async (id: number) => {
@@ -56,4 +82,8 @@ export const getActualTask = async (id: number) => {
       description: '-'
     };
   }
+};
+
+export const changeTask = async (task: Task) => {
+  return await axios.put(`/posts/${task.id}`, task);
 };

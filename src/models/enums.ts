@@ -1,8 +1,3 @@
-export enum PageModes {
-  'edit',
-  'create'
-}
-
 export enum Path {
   Create = 'tasks/create',
   Edit = '/tasks/:id/edit',
