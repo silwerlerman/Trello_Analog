@@ -11,6 +11,16 @@
   }
 }
 
+@layer components {
+  .custom-box {
+    @apply bg-slate-300 rounded shadow-2xl shadow-slate-500/50 divide-y max-task-h border-2 shadow-inner;
+  }
+
+  .loader {
+    @apply bg-[url('src/assets/loader.svg')] bg-no-repeat align-middle bg-center px-4 py-6;
+  }
+}
+
 a.active {
   @apply border-x-2 shadow-inner opacity-100 bg-indigo-800;
 }

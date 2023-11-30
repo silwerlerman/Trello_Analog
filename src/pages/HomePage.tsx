@@ -1,4 +1,5 @@
 import { Stage } from '@components/Stage/Stage';
+import { Outlet } from 'react-router-dom';
 import { stages } from 'src/metadata';
 
 export const HomePage = () => {
@@ -7,6 +8,9 @@ export const HomePage = () => {
   ));
 
   return (
-    <div className="flex justify-center gap-4 max-task-h">{stagesToShow}</div>
+    <>
+      <div className="flex justify-center gap-4 max-task-h">{stagesToShow}</div>
+      <Outlet />
+    </>
   );
 };

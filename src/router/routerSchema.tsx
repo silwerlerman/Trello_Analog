@@ -1,7 +1,8 @@
 import { Path } from '@enums';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
+import { Dialog } from '@components/Dialog/Dialog';
 
-export const router = createBrowserRouter([
+const Router = createBrowserRouter([
   {
     path: Path.Home,
     //подобная запись позволяет реализовать параллельную загрузку данных
@@ -17,16 +18,13 @@ export const router = createBrowserRouter([
         async lazy() {
           const { HomePage } = await import('@pages/HomePage');
           return { Component: HomePage };
-        }
-      },
-      {
-        path: Path.Preview,
-        async lazy() {
-          const { PreviewTaskPage } = await import(
-            '@pages/Task/PreviewTaskPage'
-          );
-          return { Component: PreviewTaskPage };
-        }
+        },
+        children: [
+          {
+            path: Path.Preview,
+            element: <Dialog title="Просмотр задачи" />
+          }
+        ]
       },
       {
         path: Path.Edit,
@@ -49,3 +47,5 @@ export const router = createBrowserRouter([
     ]
   }
 ]);
+
+export default Router;
