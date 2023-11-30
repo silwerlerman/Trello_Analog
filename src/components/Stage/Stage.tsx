@@ -1,6 +1,6 @@
 import { getTasks } from '@components/Network/NetworkController';
 import { Task } from '@components/Task/Task';
-import { Stage as StageType, Task as TaskType } from '@types';
+import { Stage as StageType, Task as TaskType } from '@schemas';
 import { useEffect, useState } from 'react';
 
 export const Stage = ({ stage }: { stage: StageType }) => {
@@ -17,9 +17,7 @@ export const Stage = ({ stage }: { stage: StageType }) => {
   const count: string | number = loading ? '' : tasks?.length;
 
   const tasksArray = count ? (
-    tasks?.map((task: TaskType, i: number) => {
-      return <Task task={task} key={i} />;
-    })
+    tasks?.map((task: TaskType, i: number) => <Task task={task} key={i} />)
   ) : (
     <p className="text-center">Задач в данном статусе нет</p>
   );

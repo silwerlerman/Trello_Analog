@@ -1,6 +1,6 @@
 import { getActualTask } from '@components/Network/NetworkController';
 import { Path } from '@enums';
-import { Task } from '@types';
+import { Task } from '@schemas';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, generatePath, useNavigate, useParams } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ export const Dialog = ({ title }: { title: string }) => {
     id: Number(params.id),
     name: '',
     stage: '',
-    created_at: ''
+    created_at: new Date()
   });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -84,7 +84,7 @@ export const Dialog = ({ title }: { title: string }) => {
             </div>
             <div className="flex gap-2">
               <p>Дата создания:</p>
-              <p>{task.created_at}</p>
+              <p>{task.created_at.toLocaleDateString()}</p>
             </div>
           </div>
         )}

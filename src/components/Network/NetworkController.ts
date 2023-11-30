@@ -1,14 +1,15 @@
-import { Task } from '@types';
+import { Task, taskSchema } from '@schemas';
 import axios from 'axios';
 
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';
 
 axios.interceptors.response.use(
   function (response) {
-    if (Object.keys(response.data).includes('userId')) {
-      return convertTaskData(response.data);
-    }
-    return response.data;
+    const validatedTask = taskSchema.safeParse(response.data);
+
+    return !validatedTask.success
+      ? convertTaskData(response.data)
+      : response.data;
   },
 
   function (error) {
@@ -25,7 +26,7 @@ const convertTaskData = (rawTask: {
   return {
     id: rawTask?.id,
     name: rawTask?.title,
-    created_at: new Date().toLocaleDateString(),
+    created_at: new Date(),
     description: rawTask?.body
   };
 };
@@ -51,7 +52,7 @@ export const getActualTask = async (id: number) => {
       id,
       name: '-',
       stage: '-',
-      created_at: '-',
+      created_at: new Date(),
       description: '-'
     };
   }
