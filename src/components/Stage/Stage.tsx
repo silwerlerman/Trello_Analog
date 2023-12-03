@@ -34,7 +34,7 @@ export const Stage = ({ stage }: { stage: StageType }) => {
         {...attributes}
         className={`${
           isLoading ? 'loader' : 'px-4 py-4'
-        } flex flex-col gap-3 h-full overflow-auto min-h-[116px]`}
+        } flex flex-col gap-3 h-full overflow-auto min-h-[149px]`}
       >
         {!isLoading &&
           (count && Array.isArray(data) ? (
@@ -44,7 +44,9 @@ export const Stage = ({ stage }: { stage: StageType }) => {
               ))}
             </SortableContext>
           ) : (
-            <p className="text-center">Задач в данном статусе нет</p>
+            <p className="text-center leading-[116px]">
+              Задач в данном статусе нет
+            </p>
           ))}
       </div>
     </div>
