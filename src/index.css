@@ -19,6 +19,9 @@
   .loader {
     @apply bg-[url('src/assets/loader.svg')] bg-no-repeat align-middle bg-center px-4 py-6;
   }
+  .draggable {
+    @apply bg-[url('src/assets/draggable.svg')] bg-no-repeat align-middle bg-center h-6 w-6 bg-black bg-slate-300 rounded;
+  }
 }
 
 a.active {
