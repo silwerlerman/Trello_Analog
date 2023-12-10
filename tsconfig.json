@@ -10,10 +10,9 @@
     "moduleResolution": "bundler",
     "baseUrl": ".",
     "paths": {
-      "@pages/*": ["src/pages/*"],
-      "@components/*": ["src/components/*"],
-      "@enums":["src/models/enums"],
-      "@schemas":["src/models/schemas"],
+      "@UI/*": ["src/UI/*"],
+      "@Core/*": ["src/Core/*"],
+      "@API/*": ["src/API/*"],
     },
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
