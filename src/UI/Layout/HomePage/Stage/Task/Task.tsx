@@ -4,7 +4,8 @@ import { useTask } from './useTask';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-export const Task = ({ task }: { task: TaskType; handle?: boolean }) => {
+export const Task = (props: TaskType) => {
+  const task = props;
   const { goToPath } = useTask(task);
 
   const { setNodeRef, attributes, listeners, transform, transition } =
@@ -26,7 +27,7 @@ export const Task = ({ task }: { task: TaskType; handle?: boolean }) => {
       <div className="flex justify-between">
         <button
           onClick={e => goToPath(e, Paths.Preview)}
-          className="hover:text-purple-800 hover:cursor-pointer font-bold w-fit break-all"
+          className="hover:text-purple-800 hover:cursor-pointer font-bold w-fit break-all text-left"
         >
           {task.name}
         </button>
