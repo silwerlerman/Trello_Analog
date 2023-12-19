@@ -4,7 +4,8 @@ import { Stage as StageType } from '@Core/Stage';
 import { Task as TaskType } from '@Core/Task';
 import { useStage } from './useStage';
 
-export const Stage = ({ stage }: { stage: StageType }) => {
+export const Stage = ({ name }: StageType) => {
+  const stage = { name };
   const { setNodeRef, isLoading, data, attributes, taskIds, count } =
     useStage(stage);
 
@@ -25,7 +26,14 @@ export const Stage = ({ stage }: { stage: StageType }) => {
           (count && Array.isArray(data) ? (
             <SortableContext items={taskIds}>
               {data?.map((task: TaskType, i: number) => (
-                <Task task={task} key={i} handle={true} />
+                <Task
+                  id={task.id}
+                  name={task.name}
+                  stage={task.stage}
+                  created_at={task.created_at}
+                  description={task.description}
+                  key={i}
+                />
               ))}
             </SortableContext>
           ) : (
