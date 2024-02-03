@@ -16,7 +16,7 @@ export const HomePage = () => {
     >
       <div className="flex justify-center gap-4 max-task-h">
         {stages.map((stage, i) => (
-          <Stage stage={stage} key={i} />
+          <Stage {...stage} key={i} />
         ))}
       </div>
       <Outlet />
@@ -24,7 +24,7 @@ export const HomePage = () => {
         <DragOverlay>
           {activeTask && (
             <div className="w-full">
-              <Task task={activeTask} />
+              <Task {...activeTask} />
             </div>
           )}
         </DragOverlay>,
