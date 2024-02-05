@@ -1,113 +1,191 @@
 import { useEditTask } from './useEditTask';
 import { useNavigationBack } from '@API/LocalHooks';
 import { stages } from '@Core/Metadata';
+import {
+  Button,
+  FormItem,
+  Input,
+  Panel,
+  Header,
+  Select,
+  Textarea,
+  Footer,
+  View,
+  Group,
+  Spacing,
+  PanelSpinner
+} from '@vkontakte/vkui';
+import { Controller } from 'react-hook-form';
 
 export const EditTaskPage = () => {
   const { goBack } = useNavigationBack();
   const {
     id,
+    data,
     isLoading,
     dataUpdatedAt,
     isSubmitting,
     handleSubmit,
     submitHandler,
-    register,
+    getDefaultValue,
+    control,
     errors
   } = useEditTask();
 
   return (
-    <div className="flex flex-col  custom-box backdrop:bg-black backdrop:opacity-75 max-w-3xl mx-auto h-full">
-      <header className="flex justify-between px-4 py-4">
-        <p className="font-bold text-lg">
-          {id ? 'Форма редактирования задачи' : 'Форма создания новой задачи'}
-        </p>
-      </header>
-      {!isLoading && (
-        <form
-          id="form"
-          key={dataUpdatedAt}
-          onSubmit={handleSubmit(submitHandler)}
-          className="flex flex-col gap-6 px-4 py-4 overflow-auto"
-        >
-          <div>
-            <p>ID</p>
-            <input
-              {...register('id')}
-              type="number"
-              min={0}
-              max={100}
-              readOnly={!!id}
-              className="w-full"
-              placeholder="Введите ID..."
-            ></input>
-            {errors.id && (
-              <p className="text-red-500">{`${errors.id.message}`}</p>
-            )}
-          </div>
-          <div>
-            <p>Название</p>
-            <input
-              {...register('name')}
-              className="w-full"
-              placeholder="Введите название..."
-            ></input>
-            {errors.name && (
-              <p className="text-red-500">{`${errors.name.message}`}</p>
-            )}
-          </div>
-          <div>
-            <p>Этап</p>
-            <select
-              {...register('stage')}
-              className="h-6 w-full"
-              placeholder="Выберите этап..."
-            >
-              {stages.map((stage, i) => (
-                <option value={stage.name} key={i}>
-                  {stage.name}
-                </option>
-              ))}
-            </select>
-            {errors.stage && (
-              <p className="text-red-500">{`${errors.stage.message}`}</p>
-            )}
-          </div>
-          <div>
-            <p>Описание</p>
-            <textarea
-              {...register('description')}
-              className="w-full h-24"
-              placeholder="Введите описание..."
-            ></textarea>
-            {errors.description && (
-              <p className="text-red-500">{`${errors.description.message}`}</p>
-            )}
-          </div>
-        </form>
-      )}
-      <footer
-        className={`${
-          isSubmitting || isLoading ? 'loader' : 'px-4 py-4'
-        } flex justify-center gap-6`}
-      >
-        {!isSubmitting && !isLoading && (
-          <button
-            className="hover:text-purple-800 hover:cursor-pointer font-bold w-fit"
-            type="submit"
-            form="form"
+    !isLoading && (
+      <View activePanel="main" className="h-fit-content-important">
+        {
+          <Panel
+            id="main"
+            className="flex flex-col custom-box backdrop:bg-black backdrop:opacity-75 max-w-3xl mx-auto h-full h-fit-content-important"
           >
-            {id ? 'Сохранить' : 'Создать'}
-          </button>
-        )}
-        {id && !isSubmitting && !isLoading && (
-          <button
-            className="hover:text-purple-800 hover:cursor-pointer font-bold w-fit"
-            onClick={goBack}
-          >
-            Отмена
-          </button>
-        )}
-      </footer>
-    </div>
+            <Header className="flex justify-between px-4 py-4" size="large">
+              {id
+                ? 'Форма редактирования задачи'
+                : 'Форма создания новой задачи'}
+            </Header>
+            <Spacing size={16} />
+            {isSubmitting || isLoading ? (
+              <PanelSpinner size="medium" />
+            ) : (
+              <Group className="mx-4">
+                <form
+                  id="form"
+                  key={dataUpdatedAt}
+                  className="flex flex-col overflow-auto"
+                >
+                  <Controller
+                    name="id"
+                    control={control}
+                    render={({ field: { onChange } }) => (
+                      <FormItem
+                        htmlFor="id"
+                        top="ID"
+                        bottom={errors?.id?.message ? errors?.id?.message : ''}
+                        status={
+                          errors?.id?.message?.length ? 'error' : 'default'
+                        }
+                      >
+                        <Input
+                          id="id"
+                          type="number"
+                          min={0}
+                          max={100}
+                          disabled={!!id}
+                          placeholder="Введите ID..."
+                          defaultValue={data?.id}
+                          onChange={onChange}
+                        />
+                      </FormItem>
+                    )}
+                  />
+                  <Controller
+                    name="name"
+                    control={control}
+                    render={({ field: { onChange } }) => (
+                      <FormItem
+                        htmlFor="name"
+                        top="Название"
+                        bottom={
+                          errors?.name?.message ? errors?.name?.message : ''
+                        }
+                        status={
+                          errors?.name?.message?.length ? 'error' : 'default'
+                        }
+                      >
+                        <Input
+                          id="name"
+                          placeholder="Введите название..."
+                          defaultValue={data?.name}
+                          onChange={onChange}
+                        />
+                      </FormItem>
+                    )}
+                  />
+                  <Controller
+                    name="stage"
+                    control={control}
+                    render={({ field: { onChange } }) => (
+                      <FormItem
+                        htmlFor="stage"
+                        top="Этап"
+                        bottom={
+                          errors?.stage?.message ? errors?.stage?.message : ''
+                        }
+                        status={
+                          errors?.stage?.message?.length ? 'error' : 'default'
+                        }
+                      >
+                        <Select
+                          id="stage"
+                          disabled={!!id}
+                          placeholder="Выберите этап..."
+                          options={stages.map((stage, i) => ({
+                            label: stage.name,
+                            value: i
+                          }))}
+                          defaultValue={getDefaultValue()}
+                          onChange={onChange}
+                        />
+                      </FormItem>
+                    )}
+                  />
+                  <Controller
+                    name="description"
+                    control={control}
+                    render={({ field: { onChange } }) => (
+                      <FormItem
+                        htmlFor="description"
+                        top="Описание"
+                        bottom={
+                          errors?.description?.message
+                            ? errors?.description?.message
+                            : ''
+                        }
+                        status={
+                          errors?.description?.message?.length
+                            ? 'error'
+                            : 'default'
+                        }
+                      >
+                        <Textarea
+                          id="description"
+                          placeholder="Введите описание..."
+                          defaultValue={data?.description}
+                          onChange={onChange}
+                        />
+                      </FormItem>
+                    )}
+                  />
+                </form>
+              </Group>
+            )}
+            {!isSubmitting && !isLoading && (
+              <Footer
+                aria-orientation="horizontal"
+                className={` flex justify-center gap-6`}
+              >
+                {!isSubmitting && !isLoading && (
+                  <Button
+                    size="l"
+                    onClick={handleSubmit(submitHandler)}
+                    appearance="accent"
+                    stretched
+                  >
+                    {id ? 'Сохранить' : 'Создать'}
+                  </Button>
+                )}
+                {id && !isSubmitting && !isLoading && (
+                  <Button size="l" onClick={goBack} mode="tertiary" stretched>
+                    {'Отмена'}
+                  </Button>
+                )}
+              </Footer>
+            )}
+          </Panel>
+        }
+      </View>
+    )
   );
 };

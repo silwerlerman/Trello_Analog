@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+import { stages } from '@Core/Metadata';
 
 export const useEditTask = () => {
   const { id } = useParams();
@@ -21,7 +22,7 @@ export const useEditTask = () => {
   const currentStage = data?.stage || null;
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm<Task>({
@@ -38,21 +39,29 @@ export const useEditTask = () => {
   });
 
   const submitHandler = async (data: Task) => {
-    const fetchedData = await changeTask(data);
+    const stageToSave: Task = { ...data };
+
+    stageToSave.stage = !stageToSave.stage
+      ? 'Назначено'
+      : Number.parseInt(stageToSave.stage)
+        ? stages.map(stage => stage.name)[Number(stageToSave.stage)]
+        : stageToSave.stage;
+
+    const fetchedData = await changeTask(stageToSave);
     const currentStageData: Task[] | undefined = queryClient.getQueryData(
-      `${data.stage}-tasks`
+      `${stageToSave.stage}-tasks`
     );
     if (!id) {
       queryClient.setQueryData(
-        `${data.stage}-tasks`,
+        `${stageToSave.stage}-tasks`,
         currentStageData ? [...currentStageData, fetchedData] : [fetchedData]
       );
     } else {
       const filteredTasks: Task[] | undefined = currentStageData?.filter(
-        task => task.id != data.id
+        task => task.id != stageToSave.id
       );
       if (filteredTasks?.length) {
-        queryClient.setQueryData(`${data.stage}-tasks`, [
+        queryClient.setQueryData(`${stageToSave.stage}-tasks`, [
           ...filteredTasks,
           fetchedData
         ]);
@@ -71,14 +80,23 @@ export const useEditTask = () => {
     navigate(-1);
   };
 
+  const getDefaultValue = () => {
+    const index = stages
+      .map(stage => stage.name)
+      .indexOf(data?.stage ? data.stage : '');
+    return index == -1 ? 0 : index;
+  };
+
   return {
     id,
+    data,
     isLoading,
     dataUpdatedAt,
     isSubmitting,
     handleSubmit,
     submitHandler,
-    register,
+    getDefaultValue,
+    control,
     errors
   };
 };

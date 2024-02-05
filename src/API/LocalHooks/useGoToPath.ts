@@ -1,9 +1,8 @@
 import { Task } from '@Core/Task';
-import { Paths } from '@UI/Paths';
 import { useQueryClient } from 'react-query';
 import { generatePath, useNavigate } from 'react-router-dom';
 
-export const useTask = (task: Task) => {
+export const useGoToPath = (task: Task) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -12,8 +11,8 @@ export const useTask = (task: Task) => {
   };
 
   const goToPath = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    path: Paths
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    path: string
   ) => {
     setActiveTask();
     navigate(generatePath(path.toString(), { id: task.id?.toString() }));

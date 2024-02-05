@@ -1,12 +1,21 @@
 import { Paths } from '@UI/Paths';
 import { Task as TaskType } from '@Core/Task';
-import { useTask } from './useTask';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import {
+  Button,
+  Group,
+  MiniInfoCell,
+  Spacing,
+  Text,
+  Title
+} from '@vkontakte/vkui';
+import { Icon28EditOutline, Icon28More } from '@vkontakte/icons';
+import { useGoToPath } from '@API/LocalHooks/useGoToPath';
 
 export const Task = (props: TaskType) => {
   const task = props;
-  const { goToPath } = useTask(task);
+  const { goToPath } = useGoToPath(task);
 
   const { setNodeRef, attributes, listeners, transform, transition } =
     useSortable({ id: task.id, data: { type: 'Task', task } });
@@ -22,29 +31,33 @@ export const Task = (props: TaskType) => {
       style={style}
       {...attributes}
       {...listeners}
-      className="flex flex-col gap-2 py-3 px-3 border-2 rounded-lg drop-shadow bg-slate-300"
+      className="flex flex-col py-3 px-3 border-2 rounded-lg drop-shadow main-background"
     >
-      <div className="flex justify-between">
-        <button
+      <Group mode="plain" className="flex justify-between">
+        <Button
+          appearance="neutral"
+          size="s"
+          mode="link"
           onClick={e => goToPath(e, Paths.Preview)}
-          className="hover:text-purple-800 hover:cursor-pointer font-bold w-fit break-all text-left"
+          className="mb-2"
         >
-          {task.name}
-        </button>
-        <div className="draggable"></div>
-      </div>
-
-      <p>{task.description}</p>
-      <div className="flex justify-between">
-        <button
+          <Title level="3">{task.name}</Title>
+        </Button>
+        <Icon28More width={24} height={24} />
+      </Group>
+      <Spacing size={12} />
+      <Text>{task.description}</Text>
+      <Spacing size={12} />
+      <Group mode="plain" className="flex justify-between">
+        <Button
+          before={<Icon28EditOutline width={24} height={24} />}
+          mode="link"
           onClick={e => goToPath(e, Paths.Edit)}
-          className="hover:text-purple-800 hover:cursor-pointer font-bold w-fit"
-        >
-          Изменить
-        </button>
-
-        <p className="text-right">{task.created_at.toLocaleDateString()}</p>
-      </div>
+        ></Button>
+        <MiniInfoCell className="pr-0-important" mode="accent">
+          {task.created_at.toLocaleDateString()}
+        </MiniInfoCell>
+      </Group>
     </div>
   );
 };

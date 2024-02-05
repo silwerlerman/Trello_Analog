@@ -4,26 +4,42 @@
 
 @layer utilities {
   .max-work-area-h {
-    max-height: calc(100vh - 76px);
+    height: 100vh;
+    max-height: calc(100vh - 48px);
   }
   .max-task-h {
+    max-width: 100%;
     max-height: calc(100vh - 120px);
+  }
+  .main-background {
+    background: var(--vkui--color_background);
+  }
+  .h-fit-content-important {
+    height: fit-content !important;
+  }
+
+  .popup-background {
+    background: var(--vkui--color_background_content);
+  }
+
+  .flex-col-important {
+    flex-direction: column !important;
   }
 }
 
 @layer components {
   .custom-box {
-    @apply bg-slate-300 rounded shadow-2xl shadow-slate-500/50 divide-y max-task-h border-2 shadow-inner;
+    @apply bg-slate-50 rounded-xl divide-y max-task-h border-2;
   }
 
   .loader {
     @apply bg-[url('src/assets/loader.svg')] bg-no-repeat align-middle bg-center px-4 py-6;
   }
   .draggable {
-    @apply bg-[url('src/assets/draggable.svg')] bg-no-repeat align-middle bg-center h-6 w-6 bg-black bg-slate-300 rounded;
+    @apply bg-[url('src/assets/draggable.svg')] bg-no-repeat align-middle bg-center h-6 w-6 rounded;
   }
 }
 
 a.active {
-  @apply border-x-2 shadow-inner opacity-100 bg-indigo-800;
+  @apply caret-red-600;
 }
