@@ -1,54 +1,64 @@
 import { Paths } from '@UI/Paths';
-import { Link, generatePath } from 'react-router-dom';
+import { generatePath } from 'react-router-dom';
 import { usePreviewDialog } from './usePreviewDialog';
+import {
+  Button,
+  ButtonGroup,
+  Group,
+  InfoRow,
+  Panel,
+  PanelSpinner,
+  PopoutWrapper,
+  SimpleCell,
+  Title
+} from '@vkontakte/vkui';
+import { Icon28EditOutline, Icon36Cancel } from '@vkontakte/icons';
+import { useGoToPath } from '@API/LocalHooks/useGoToPath';
+import { Task } from '@Core/Task';
 
 export const PreviewDialog = ({ title }: { title: string }) => {
-  const { id, dialogRef, isLoading, data, goBack } = usePreviewDialog();
+  const { id, isLoading, data, goBack } = usePreviewDialog();
+  const { goToPath } = useGoToPath(data as Task);
 
   return (
-    <dialog
-      className="flex flex-col w-full custom-box backdrop:bg-black backdrop:opacity-75 max-w-3xl"
-      ref={dialogRef}
-    >
-      <header className="flex justify-between px-4 py-4">
-        <p className="font-bold text-lg">{title}</p>
-        <div className="flex gap-6">
-          <Link
-            to={generatePath(Paths.Edit, { id: id || null })}
-            className="hover:text-purple-800 hover:cursor-pointer font-bold w-fit"
-          >
-            <button className="pt-[1.40px]">Изменить</button>
-          </Link>
-          <button
-            className="hover:text-purple-800 hover:cursor-pointer font-bold w-fit items"
-            onClick={goBack}
-          >
-            Отмена
-          </button>
-        </div>
-      </header>
-      <div
-        className={`${
-          isLoading ? 'loader' : 'px-4 py-4'
-        } flex justify-center w-full`}
-      >
-        {!isLoading && (
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-11">
-              <p>Название:</p>
-              <p>{data?.name}</p>
-            </div>
-            <div className="flex gap-11">
-              <p>Описание:</p>
-              <p>{data?.description}</p>
-            </div>
-            <div className="flex gap-2">
-              <p>Дата создания:</p>
-              <p>{data?.created_at.toLocaleDateString()}</p>
-            </div>
-          </div>
+    <PopoutWrapper>
+      <Panel className="p-3 flex-col-important relative rounded-lg max-w-3xl custom-box">
+        <Group mode="plain" className="flex justify-between px-4">
+          <Title level="2">{title}</Title>
+          <ButtonGroup className="flex gap-6">
+            <Button
+              before={<Icon28EditOutline width={24} height={24} />}
+              mode="link"
+              onClick={e =>
+                goToPath(e, generatePath(Paths.Edit, { id: id || null }))
+              }
+            ></Button>
+            <Button
+              before={<Icon36Cancel width={28} height={28} />}
+              mode="link"
+              onClick={goBack}
+            ></Button>
+          </ButtonGroup>
+        </Group>
+
+        {isLoading ? (
+          <PanelSpinner size="medium" />
+        ) : (
+          <Group className="px-4">
+            <SimpleCell>
+              <InfoRow header="Название">{data?.name}</InfoRow>
+            </SimpleCell>
+            <SimpleCell>
+              <InfoRow header="Описание">{data?.description}</InfoRow>
+            </SimpleCell>
+            <SimpleCell>
+              <InfoRow header="Дата создания">
+                {data?.created_at.toLocaleDateString()}
+              </InfoRow>
+            </SimpleCell>
+          </Group>
         )}
-      </div>
-    </dialog>
+      </Panel>
+    </PopoutWrapper>
   );
 };

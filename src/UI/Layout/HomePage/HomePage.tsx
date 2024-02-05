@@ -14,7 +14,7 @@ export const HomePage = () => {
       onDragEnd={onDragEnd}
       sensors={sensors}
     >
-      <div className="flex justify-center gap-4 max-task-h">
+      <div className="flex justify-center align-i gap-4 max-task-h">
         {stages.map((stage, i) => (
           <Stage {...stage} key={i} />
         ))}
